@@ -77,10 +77,54 @@ int getAbilityScore(const std::string& prompt, int remainingPoints) {
 }
 
 std::string getAncestry() {
-    std::vector <std::string> ancestries = { "Human", };
+    std::vector <std::string> ancestries = { "Human", "Moonshadow Elf", "Dragonborn","Gnome", "Shadowblood Humans", "Aetherkin" };
+    std::cout << "Select Ancestry:\n";
+    int index = 1; // start at 1 for the index. The index will help print out the ancestry options above!!!
+    for (const auto& ancestry : ancestries) { // the const auto like all the other codes will help look at each one of the ancestries in the vector
+        std::cout << index++ << ". " << ancestry << "\n"; // this prints the current value of index, then the name of the ancestry. If the index is 1, itll print human, since human is first. index++ means itll go up for each loop, so next will be 2.
+    }
+    int choice; // needs to store the users choice, so a variable is made to hold it
+    while (true) {
+        std::cout << "Enter choice (1-" << ancestries.size() << "): "; // this shows the user that they have 1- the size of the vector which is 6 for the ancestry
+        std::cin >> choice; // sends in the user input into choice
+        if (choice >= 1 && choice <= ancestries.size()) { // checks if the choice is between one and 6 (the ancestries size) and makes sure the choice is above one
+            return ancestries[choice - 1]; // since vectors start at 0 and not one, i need to code -1 so it starts at 0 and goes down everytime to call upon the correct ancestry
+        }
+        else {
+            std::cout << "Invalid choice. Please try again.\n"; // if invalid, shows this to the user!
+        }
+    }
 }
 
-int main() {
-    std::cout << "hi" << std::endl; 
-    return 0; 
-};
+std::string getClass() {
+    std::vector <std::string> classes = {INPUT THESE LATER LIANA}; // these are the classes the player can choose from, creates a list
+    std::cout << "Select Class:\n"; // cout for the player to choose their class
+    for (size_t i = 0; i < classes.size(); ++i) { // like above, start counting from 0, not one. runs the loop until i is less than the number of classes, and then increases 1 by one to circle through them all
+        std::cout << i + 1 << ". " << classes[i] << "\n"; // prints the number and the name of each class! add one since the player should see it start at 1, not 0, but the computer starts at 0
+    }
+
+    int choice; // stores the users choice
+    while (true) {
+        std::cout << "Enter choice (1-" << classes.size() << "): "; // asks the user to input their choice from 1 to the valid class size (7)
+        std::cin >> choice; // Get what the user inputs and stores it in choice
+        if (choice >= 1 && choice <= classes.size()) { // Check if the choice is valid (between 1 and the number of classes, which is 7)
+            return classes[choice - 1]; // Subtract 1 because lists start at 0
+        }
+        else {
+            std::cout << "Invalid choice. Please try again.\n"; // if invalid, shows this to the user!
+        }
+    }
+}
+
+int main() { // the main function, that actually makes the code work and show to the user
+    Character character; // 
+    char continueChoice;
+
+    do {
+
+    }
+
+
+
+    return 0;
+}
