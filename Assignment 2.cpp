@@ -39,6 +39,14 @@ public:
     }
 };
 
+std::string trim(const std::string& str) { //learned new tool named trim, it helps remove any leading or trailing spaces from a string, which is the users inputted name
+    size_t first = str.find_first_not_of(' '); // finds the first character that is not a space
+    if (first == std::string::npos) return ""; // if the first inputted character is not a space
+    size_t last = str.find_last_not_of(' '); // it finds now the last character that is not a space
+    return str.substr(first, last - first + 1); //finds first character that isnt a space then takes the last character before a space and subtracts it by the first then adds one. we add one because of the first character being space.
+}
+
+
 bool isValidName(const std::string& name) { //create function to make sure the player doesnt input a name longer than 10 characters or blank! 
     // return !name.empty() check to see if the name is empty
     // && = and, in which both must apply
@@ -97,7 +105,7 @@ std::string getAncestry() {
 }
 
 std::string getClass() {
-    std::vector <std::string> classes = {INPUT THESE LATER LIANA}; // these are the classes the player can choose from, creates a list
+    std::vector <std::string> classes = { "Sorcerer", "Paladin", "Rogue", "Bard", "Ranger", "Cleric", "Artificer" }; // these are the classes the player can choose from, creates a list
     std::cout << "Select Class:\n"; // cout for the player to choose their class
     for (size_t i = 0; i < classes.size(); ++i) { // like above, start counting from 0, not one. runs the loop until i is less than the number of classes, and then increases 1 by one to circle through them all
         std::cout << i + 1 << ". " << classes[i] << "\n"; // prints the number and the name of each class! add one since the player should see it start at 1, not 0, but the computer starts at 0
@@ -117,14 +125,40 @@ std::string getClass() {
 }
 
 int main() { // the main function, that actually makes the code work and show to the user
-    Character character; // 
-    char continueChoice;
+    Character character; // creates a variable from the type character. so we can use character name, ancestry, class name, ability scores etc! 
+    char continueChoice; // needs to store whether or not the player wants to create a new player
 
     do {
+        std::cout << "Enter character name (max 10 characters): "; // ask the player to input their name
+        std::string inputName;
+        std::getline(std::cin, inputName); // get the inputted name using cin
+        character.name = trim(inputName); // new tool named 'trim', it trims the "useless" spaces in the entered name! 
 
+        while (!isValidName(character.name)) {
+            std::cout << "Invalid name. Please enter a valid name (max 10 characters): "; // if name entered doesnt follow the validname guidelines set, it sends out this message
+            std::getline(std::cin, inputName); // same as above, gets the inputted name using cin
+            character.name = trim(inputName); // trims again like earlier once name is valid
+        }
+
+    character.ancestry = getAncestry(); //get both ancestry and class for main part of code now
+    character.className = getClass(); 
+
+    int totalPoints = 30; // create 30 total points for the user to use! these make it so they can only use 30 total points so they must use them wisely
+    std::cout << "You have a total of " << totalPoints << " points to use among the ability scores!\n"; //cout line of code so the user knows how much points they have
+
+    for (int i = 0; i < 6; ++i) { // starts at i = 0, since computers read 0 as one. when i is smaller than 6 increase i by one since there is 6 abilityscores! 
+        std::string abilities[] = { "Strength", "Dexterity", "Constitution", "Wisdom", "Intelligence", "Charisma" }; // the abilityscore names
+        character.abilityScores[i] = getAbilityScore(abilities[i], totalPoints); // this shows the score for each ability and then the totalpoints
+        totalPoints -= character.abilityScores[i]; // this deducts points from the total points after purchasing abilitypoints
     }
 
+    character.printCharacter(); // prints all the characters details all at once. this shows all the character traits such as name, ancestry, class and all ability scores
 
+    std::cout << "Generate another character? (y/n): "; // asks user if they would like to create another character before the code ends
+    std::cin >> continueChoice; // the users input is then stored into continuechoice
+    std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n'); // using ignore like in the pervious codes and using numeric limits and streamsize max to clear anything left in the input buffer that could cause issues
+    // input buffer is a place where the computer holds storage. like if i were to type hello and hit enter, the computer holds it for when later in the code it needs to be called upon
+    } while (continueChoice == 'y' || continueChoice == 'Y'); // if the user inputs either lowercase or uppercase y, then the loop contuines and lets the user create their character from the beggining! 
 
-    return 0;
+    return 0; //always end c++ code with return 0;
 }
